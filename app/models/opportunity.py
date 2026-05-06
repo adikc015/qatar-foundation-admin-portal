@@ -3,8 +3,6 @@ from datetime import datetime
 
 
 class Opportunity(db.Model):
-    """Opportunity model for admin portal"""
-    
     __tablename__ = 'opportunities'
     
     id = db.Column(db.Integer, primary_key=True)
@@ -23,15 +21,6 @@ class Opportunity(db.Model):
         return f'<Opportunity {self.id}: {self.name} (Admin: {self.admin_id})>'
     
     def to_dict(self, include_admin=False):
-        """
-        Convert opportunity object to dictionary
-        
-        Args:
-            include_admin (bool): Include related admin info
-            
-        Returns:
-            dict: Opportunity data as dictionary
-        """
         data = {
             'id': self.id,
             'admin_id': self.admin_id,
@@ -56,23 +45,11 @@ class Opportunity(db.Model):
         return data
     
     def get_skills_list(self):
-        """
-        Get skills as a list instead of comma-separated string
-        
-        Returns:
-            list: List of skills
-        """
         if not self.skills:
             return []
         return [skill.strip() for skill in self.skills.split(',')]
     
     def set_skills_list(self, skills_list):
-        """
-        Set skills from a list
-        
-        Args:
-            skills_list (list): List of skills
-        """
         if skills_list:
             self.skills = ','.join([str(skill).strip() for skill in skills_list])
         else:

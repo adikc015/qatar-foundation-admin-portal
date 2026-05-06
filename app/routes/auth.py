@@ -8,7 +8,6 @@ from datetime import datetime
 
 @auth_bp.route('/register', methods=['POST'])
 def register():
-    """User registration endpoint"""
     data = request.get_json()
     
     if not data or not data.get('username') or not data.get('email') or not data.get('password'):
@@ -44,7 +43,6 @@ def register():
 
 @auth_bp.route('/login', methods=['POST'])
 def login():
-    """User login endpoint"""
     data = request.get_json()
     
     if not data or not data.get('username') or not data.get('password'):
@@ -74,11 +72,9 @@ def login():
 
 @auth_bp.route('/logout', methods=['POST'])
 def logout():
-    """User logout endpoint"""
     return jsonify({'message': 'Logout successful'}), 200
 
 
 @auth_bp.route('/health', methods=['GET'])
 def health():
-    """Health check endpoint"""
     return jsonify({'status': 'healthy', 'service': 'auth'}), 200

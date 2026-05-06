@@ -3,8 +3,6 @@ from datetime import datetime
 
 
 class User(db.Model):
-    """User model for admin portal"""
-    
     __tablename__ = 'users'
     
     id = db.Column(db.Integer, primary_key=True)
@@ -22,7 +20,6 @@ class User(db.Model):
         return f'<User {self.username}>'
     
     def to_dict(self):
-        """Convert user object to dictionary"""
         return {
             'id': self.id,
             'username': self.username,
@@ -36,5 +33,4 @@ class User(db.Model):
         }
     
     def is_admin(self):
-        """Check if user has admin role"""
         return self.role == 'admin'

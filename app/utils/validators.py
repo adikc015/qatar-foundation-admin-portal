@@ -1,20 +1,8 @@
-"""
-Validation utilities for form data
-"""
 import re
 from email_validator import validate_email, EmailNotValidError
 
 
 def validate_email_format(email):
-    """
-    Validate email format using email-validator library
-    
-    Args:
-        email (str): Email address to validate
-        
-    Returns:
-        tuple: (bool, str) - (is_valid, error_message)
-    """
     if not email or not isinstance(email, str):
         return False, "Email is required"
     
@@ -28,17 +16,6 @@ def validate_email_format(email):
 
 
 def validate_password(password, confirm_password=None, min_length=8):
-    """
-    Validate password strength
-    
-    Args:
-        password (str): Password to validate
-        confirm_password (str): Confirmation password (optional)
-        min_length (int): Minimum password length
-        
-    Returns:
-        tuple: (bool, str) - (is_valid, error_message)
-    """
     if not password or not isinstance(password, str):
         return False, "Password is required"
     
@@ -53,16 +30,6 @@ def validate_password(password, confirm_password=None, min_length=8):
 
 
 def validate_full_name(full_name, min_length=2):
-    """
-    Validate full name
-    
-    Args:
-        full_name (str): Full name to validate
-        min_length (int): Minimum name length
-        
-    Returns:
-        tuple: (bool, str) - (is_valid, error_message)
-    """
     if not full_name or not isinstance(full_name, str):
         return False, "Full name is required"
     
@@ -78,16 +45,6 @@ def validate_full_name(full_name, min_length=2):
 
 
 def validate_required_fields(data, required_fields):
-    """
-    Validate that all required fields are present in data
-    
-    Args:
-        data (dict): Data dictionary to validate
-        required_fields (list): List of required field names
-        
-    Returns:
-        tuple: (bool, str) - (is_valid, error_message)
-    """
     if not data:
         return False, "Request body is required"
     
@@ -100,26 +57,8 @@ def validate_required_fields(data, required_fields):
 
 
 def sanitize_email(email):
-    """
-    Sanitize email address
-    
-    Args:
-        email (str): Email to sanitize
-        
-    Returns:
-        str: Sanitized email
-    """
     return email.strip().lower() if email else None
 
 
 def sanitize_string(value):
-    """
-    Sanitize string input
-    
-    Args:
-        value (str): String to sanitize
-        
-    Returns:
-        str: Sanitized string
-    """
     return value.strip() if isinstance(value, str) else None

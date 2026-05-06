@@ -1,6 +1,3 @@
-"""
-Admin authentication routes
-"""
 import secrets
 from datetime import datetime, timedelta
 
@@ -23,59 +20,44 @@ admin_auth_bp = Blueprint('admin_auth', __name__)
 
 @admin_auth_bp.route('/signup', methods=['POST'])
 def admin_signup():
-    """
-    Admin signup endpoint
-    
-    Request body:
-    {
-        "full_name": "John Doe",
-        "email": "john@example.com",
-        "password": "SecurePass123",
-        "confirm_password": "SecurePass123"
-    }
-    
-    Returns:
-        JSON response with success or error message
-    """
     data = request.get_json()
-    
-    
+
     required_fields = ['full_name', 'email', 'password', 'confirm_password']
     is_valid, error_msg = validate_required_fields(data, required_fields)
     if not is_valid:
         return jsonify({'error': error_msg}), 400
-    
+
     full_name = sanitize_string(data.get('full_name'))
     email = sanitize_email(data.get('email'))
     password = data.get('password')
     confirm_password = data.get('confirm_password')
-    
+
     is_valid, error_msg = validate_full_name(full_name)
     if not is_valid:
         return jsonify({'error': error_msg}), 400
-    
+
     is_valid, error_msg = validate_password(password, confirm_password, min_length=8)
     if not is_valid:
         return jsonify({'error': error_msg}), 400
-    
+
     is_valid, error_msg = validate_email_format(email)
     if not is_valid:
         return jsonify({'error': error_msg}), 400
-    
+
     existing_admin = Admin.query.filter_by(email=email).first()
     if existing_admin:
         return jsonify({'error': 'Email already registered'}), 409
     
-    
+
     try:
         password_hash = hash_password(password)
-        
+
         new_admin = Admin(
             full_name=full_name,
             email=email,
             password=password_hash
         )
-        
+
         db.session.add(new_admin)
         db.session.commit()
         
@@ -96,19 +78,6 @@ def admin_signup():
 
 @admin_auth_bp.route('/login', methods=['POST'])
 def admin_login():
-    """
-    Admin login endpoint
-
-    Request body:
-    {
-        "email": "john@example.com",
-        "password": "SecurePass123",
-        "remember_me": true
-    }
-
-    Returns:
-        JSON response with success or error message
-    """
     data = request.get_json()
 
     required_fields = ['email', 'password']
@@ -153,11 +122,6 @@ def admin_login():
 
 @admin_auth_bp.route('/forgot-password', methods=['POST'])
 def forgot_password():
-    """
-    Request a password reset token.
-
-    Always returns a success message to avoid account enumeration.
-    """
     data = request.get_json()
     email = sanitize_email(data.get('email')) if data else None
 
@@ -175,9 +139,6 @@ def forgot_password():
 
 @admin_auth_bp.route('/reset-password/<token>', methods=['POST'])
 def reset_password(token):
-    """
-    Reset password using a secure token.
-    """
     data = request.get_json()
     new_password = data.get('new_password') if data else None
     confirm_password = data.get('confirm_password') if data else None
@@ -208,7 +169,6 @@ def reset_password(token):
 
 @admin_auth_bp.route('/health', methods=['GET'])
 def admin_auth_health():
-    """Health check endpoint for admin auth service"""
     return jsonify({
         'status': 'healthy',
         'service': 'admin-auth'

@@ -3,8 +3,6 @@ from datetime import datetime
 
 
 class Admin(db.Model):
-    """Admin model for admin portal"""
-    
     __tablename__ = 'admins'
     
     id = db.Column(db.Integer, primary_key=True)
@@ -27,15 +25,6 @@ class Admin(db.Model):
         return f'<Admin {self.id}: {self.email}>'
     
     def to_dict(self, include_opportunities=False):
-        """
-        Convert admin object to dictionary
-        
-        Args:
-            include_opportunities (bool): Include related opportunities
-            
-        Returns:
-            dict: Admin data as dictionary
-        """
         data = {
             'id': self.id,
             'full_name': self.full_name,
@@ -51,11 +40,9 @@ class Admin(db.Model):
         return data
 
     def set_password_reset_token(self, token, expiry):
-        """Store a password reset token and its expiry."""
         self.password_reset_token = token
         self.password_reset_token_expiry = expiry
 
     def clear_password_reset_token(self):
-        """Clear password reset token state."""
         self.password_reset_token = None
         self.password_reset_token_expiry = None

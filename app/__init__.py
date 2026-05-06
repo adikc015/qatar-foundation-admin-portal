@@ -8,15 +8,6 @@ db = SQLAlchemy()
 
 
 def create_app(config_name=None):
-    """
-    Application factory function
-    
-    Args:
-        config_name (str): Configuration environment name
-        
-    Returns:
-        Flask: Configured Flask application
-    """
     if config_name is None:
         config_name = os.environ.get('FLASK_ENV', 'development')
     
@@ -43,7 +34,6 @@ def create_app(config_name=None):
 
 
 def register_blueprints(app):
-    """Register Flask blueprints"""
     from app.routes import auth_bp, admin_bp
     from app.routes.admin_auth import admin_auth_bp
     
@@ -53,7 +43,6 @@ def register_blueprints(app):
 
 
 def register_error_handlers(app):
-    """Register error handlers"""
     from flask import jsonify
     
     @app.errorhandler(404)

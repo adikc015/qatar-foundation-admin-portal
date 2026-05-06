@@ -1,7 +1,3 @@
-"""
-Flask Application Entry Point
-Admin Portal Backend
-"""
 import os
 from app import create_app, db
 
@@ -11,13 +7,11 @@ app = create_app(os.environ.get('FLASK_ENV', 'development'))
 
 @app.shell_context_processor
 def make_shell_context():
-    """Register shell context for Flask CLI"""
     return {'db': db}
 
 
 @app.route('/health', methods=['GET'])
 def health_check():
-    """Global health check endpoint"""
     from flask import jsonify
     return jsonify({
         'status': 'healthy',
@@ -28,7 +22,6 @@ def health_check():
 
 @app.route('/', methods=['GET'])
 def index():
-    """API root endpoint"""
     from flask import jsonify
     return jsonify({
         'message': 'Admin Portal API',

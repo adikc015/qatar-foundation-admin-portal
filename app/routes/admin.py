@@ -18,7 +18,6 @@ ALLOWED_CATEGORIES = {
 
 
 def _parse_bool(value):
-    """Parse common boolean payload values safely."""
     if isinstance(value, bool):
         return value
     if isinstance(value, str):
@@ -33,7 +32,6 @@ def _parse_bool(value):
 @admin_bp.route('/users', methods=['GET'])
 @login_required
 def get_users():
-    """Get all users"""
     try:
         page = request.args.get('page', 1, type=int)
         per_page = request.args.get('per_page', 10, type=int)
@@ -54,7 +52,6 @@ def get_users():
 @admin_bp.route('/users/<int:user_id>', methods=['GET'])
 @login_required
 def get_user(user_id):
-    """Get specific user by ID"""
     try:
         user = User.query.get(user_id)
         
@@ -70,7 +67,6 @@ def get_user(user_id):
 @admin_bp.route('/users/<int:user_id>', methods=['PUT'])
 @login_required
 def update_user(user_id):
-    """Update user information"""
     data = request.get_json()
     
     try:
@@ -103,7 +99,6 @@ def update_user(user_id):
 @admin_bp.route('/users/<int:user_id>', methods=['DELETE'])
 @login_required
 def delete_user(user_id):
-    """Delete user"""
     try:
         user = User.query.get(user_id)
         
@@ -123,7 +118,6 @@ def delete_user(user_id):
 @admin_bp.route('/dashboard', methods=['GET'])
 @login_required
 def dashboard_stats():
-    """Get admin dashboard statistics"""
     try:
         total_users = User.query.count()
         active_users = User.query.filter_by(is_active=True).count()
@@ -143,7 +137,6 @@ def dashboard_stats():
 @admin_bp.route('/opportunities', methods=['GET'])
 @login_required
 def get_admin_opportunities():
-    """Get all opportunities for the logged-in admin"""
     try:
         admin_id = session.get('admin_id')
         opportunities = (
@@ -171,7 +164,6 @@ def get_admin_opportunities():
 @admin_bp.route('/opportunities', methods=['POST'])
 @login_required
 def create_admin_opportunity():
-    """Create a new opportunity for the logged-in admin"""
     data = request.get_json() or {}
 
     required_fields = ['name', 'duration', 'start_date', 'description', 'skills', 'category', 'future_opportunities']
@@ -241,7 +233,6 @@ def create_admin_opportunity():
 @admin_bp.route('/opportunities/<int:opportunity_id>', methods=['PUT'])
 @login_required
 def update_admin_opportunity(opportunity_id):
-    """Update an opportunity owned by the logged-in admin"""
     data = request.get_json() or {}
 
     try:
@@ -324,7 +315,6 @@ def update_admin_opportunity(opportunity_id):
 @admin_bp.route('/opportunities/<int:opportunity_id>', methods=['DELETE'])
 @login_required
 def delete_admin_opportunity(opportunity_id):
-    """Delete an opportunity owned by the logged-in admin"""
     try:
         admin_id = session.get('admin_id')
         opportunity = Opportunity.query.filter_by(id=opportunity_id, admin_id=admin_id).first()
@@ -345,7 +335,6 @@ def delete_admin_opportunity(opportunity_id):
 @admin_bp.route('/opportunities/<int:opportunity_id>', methods=['GET'])
 @login_required
 def get_admin_opportunity(opportunity_id):
-    """Get a single opportunity owned by the logged-in admin"""
     try:
         admin_id = session.get('admin_id')
         opportunity = Opportunity.query.filter_by(id=opportunity_id, admin_id=admin_id).first()
